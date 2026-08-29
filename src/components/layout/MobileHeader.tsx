@@ -30,7 +30,7 @@ export function MobileHeader({ title, showBack = true, onBack, rightAction }: Mo
 
   return (
     <>
-      <header className="sticky top-0 z-30 pt-safe-top bg-bg-navy/90 backdrop-blur-md border-b border-white/10 shadow-md">
+      <header className="sticky top-0 z-30 pt-safe-top clay-surface-1 border-b border-zinc-800/80 rounded-b-3xl shadow-[0_6px_20px_rgba(0,0,0,0.6)]">
         <div className="h-14 px-4 flex items-center justify-between">
           {/* Left Action: Back Button */}
           <div className="w-12 flex items-center">
@@ -38,10 +38,10 @@ export function MobileHeader({ title, showBack = true, onBack, rightAction }: Mo
               <button
                 onClick={handleBack}
                 aria-label="Go back"
-                className="p-2 -ml-2 text-gray-300 hover:text-white rounded-xl hover:bg-white/10 flex items-center gap-1 transition-colors"
+                className="p-2 -ml-2 text-zinc-300 hover:text-white rounded-2xl clay-button-secondary flex items-center gap-1 transition-all active:scale-95 cursor-pointer"
               >
-                <ChevronLeft size={22} />
-                <span className="text-xs font-medium hidden sm:inline">Back</span>
+                <ChevronLeft size={18} />
+                <span className="text-xs font-heading font-bold hidden sm:inline">Back</span>
               </button>
             )}
           </div>
@@ -49,23 +49,23 @@ export function MobileHeader({ title, showBack = true, onBack, rightAction }: Mo
           {/* Title */}
           <div className="flex-1 flex justify-center items-center px-2">
             {typeof title === 'string' ? (
-              <h1 className="text-base sm:text-lg font-heading font-semibold text-white truncate max-w-[200px]">
+              <h1 className="text-base sm:text-lg font-heading font-extrabold text-white truncate max-w-[200px] tracking-wide">
                 {title}
               </h1>
             ) : (
-              title || <span className="font-heading font-bold text-white tracking-wide">ChitGuess</span>
+              title || <span className="font-heading font-extrabold text-white tracking-wider">ChitGuess</span>
             )}
           </div>
 
           {/* Right Action: Custom Action + Menu Drawer Trigger */}
-          <div className="w-16 flex items-center justify-end gap-1">
+          <div className="w-16 flex items-center justify-end gap-1.5">
             {rightAction}
             <button
               onClick={() => setIsMenuOpen(true)}
               aria-label="Open menu"
-              className="p-2 text-gray-300 hover:text-white rounded-xl hover:bg-white/10 transition-colors"
+              className="p-2 text-zinc-300 hover:text-white rounded-2xl clay-button-secondary transition-all active:scale-95 cursor-pointer"
             >
-              <Menu size={22} />
+              <Menu size={18} />
             </button>
           </div>
         </div>
@@ -81,3 +81,6 @@ export function MobileHeader({ title, showBack = true, onBack, rightAction }: Mo
     </>
   );
 }
+
+
+

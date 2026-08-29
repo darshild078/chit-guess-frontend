@@ -46,17 +46,18 @@ export default function JoinByLinkPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-[100dvh]">
+    <div className="flex flex-col h-full clay-surface-0 overflow-hidden">
       <MobileHeader title="Join Room" showBack onBack={() => navigate('/')} />
       
-      <main className="flex-1 p-4 pb-safe-bottom">
-        <Card>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <main className="flex-1 p-4 sm:p-6 pb-safe-bottom flex flex-col justify-center overflow-y-auto custom-scrollbar">
+
+        <Card surface="level-1" className="w-full border border-zinc-800">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <Input
               label="Room Code"
               {...register('roomCode')}
               disabled
-              className="uppercase font-mono tracking-widest text-lg bg-gray-900 border-gray-700 text-gray-400"
+              className="uppercase font-mono font-black tracking-widest text-lg text-red-500 opacity-80"
             />
             
             <Input
@@ -66,7 +67,7 @@ export default function JoinByLinkPage() {
               error={errors.displayName?.message}
             />
             
-            <div className="pt-4">
+            <div className="pt-3">
               <Button type="submit" variant="primary" size="lg" isLoading={isSubmitting} className="w-full">
                 Join Room
               </Button>
@@ -77,3 +78,6 @@ export default function JoinByLinkPage() {
     </div>
   );
 }
+
+
+

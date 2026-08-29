@@ -13,14 +13,14 @@ export function LeaveRoomModal({ isOpen, onClose, onConfirm }: LeaveRoomModalPro
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Leave Room">
       <div className="flex flex-col items-center text-center p-2">
-        <div className="w-16 h-16 bg-warning/10 text-warning rounded-full flex items-center justify-center mb-6">
-          <LogOut size={32} />
+        <div className="w-14 h-14 clay-surface-inset text-amber-500 rounded-2xl flex items-center justify-center mb-5 shadow-inner border border-zinc-800">
+          <LogOut size={28} />
         </div>
-        <p className="text-gray-300 mb-8">
+        <p className="text-zinc-300 text-sm font-extrabold leading-relaxed mb-6">
           Are you sure you want to leave this room? You will need the room code to rejoin if it hasn't been locked.
         </p>
-        <div className="flex w-full gap-4">
-          <Button variant="ghost" onClick={onClose} className="flex-1">
+        <div className="flex w-full gap-3">
+          <Button variant="secondary" onClick={onClose} className="flex-1">
             Cancel
           </Button>
           <Button variant="danger" onClick={() => { onConfirm(); onClose(); }} className="flex-1">
@@ -31,3 +31,6 @@ export function LeaveRoomModal({ isOpen, onClose, onConfirm }: LeaveRoomModalPro
     </Modal>
   );
 }
+
+
+

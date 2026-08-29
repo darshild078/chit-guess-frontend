@@ -37,28 +37,28 @@ export default function HostLobbyPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-full">
+    <div className="flex flex-col min-h-full clay-surface-0">
       <MobileHeader 
         title={hostRoom.title || "ChitGuess"} 
         rightAction={
-          <button onClick={() => navigate('/room/settings')} className="p-2 text-gray-400 hover:text-white rounded-full">
-            <Settings size={20} />
+          <button onClick={() => navigate('/room/settings')} className="p-2 text-zinc-300 hover:text-white rounded-2xl clay-button-secondary transition-all cursor-pointer">
+            <Settings size={18} />
           </button>
         }
       />
 
-      <main className="flex-1 p-4 pb-24 overflow-y-auto custom-scrollbar flex flex-col gap-6">
+      <main className="flex-1 p-4 sm:p-6 pb-28 overflow-y-auto custom-scrollbar flex flex-col gap-6">
         <RoomCodeCard code={hostRoom.roomCode} />
 
         <div className="flex flex-col gap-3">
-          <h3 className="text-sm font-medium text-gray-400 uppercase tracking-widest px-1 flex justify-between">
+          <h3 className="text-xs font-heading font-extrabold text-zinc-400 uppercase tracking-widest px-1 flex justify-between">
             <span>Players</span>
-            <span>{hostRoom.playerCount}/{hostRoom.maxPlayers}</span>
+            <span className="font-mono">{hostRoom.playerCount}/{hostRoom.maxPlayers}</span>
           </h3>
           
-          <div className="grid gap-2">
+          <div className="grid gap-2.5">
             {players.length === 0 ? (
-              <div className="text-center py-8 text-gray-500 border border-dashed border-gray-800 rounded-xl">
+              <div className="text-center py-8 text-zinc-400 font-heading font-bold text-sm clay-surface-inset rounded-2xl border border-zinc-800">
                 Waiting for players to join...
               </div>
             ) : (
@@ -92,3 +92,6 @@ export default function HostLobbyPage() {
     </div>
   );
 }
+
+
+

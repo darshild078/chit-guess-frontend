@@ -7,6 +7,8 @@ import { LoadingState } from '../components/feedback/LoadingState';
 import { User, Sparkles, ArrowRight } from 'lucide-react';
 import { useAuthStore } from '../stores/auth.store';
 import { Button } from '../components/ui/Button';
+import { Card } from '../components/ui/Card';
+import { BottomActionBar } from '../components/layout/BottomActionBar';
 import { roomApi } from '../services/room.api';
 
 export default function RevealPage() {
@@ -27,46 +29,49 @@ export default function RevealPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-full bg-black">
+    <div className="flex flex-col min-h-full clay-surface-0">
       <MobileHeader title="Identities Revealed" />
 
-      <main className="flex-1 p-4 pb-28 overflow-y-auto custom-scrollbar flex flex-col gap-6 relative">
-        <div className="text-center py-4 space-y-1">
-          <h2 className="text-2xl font-heading font-bold text-white flex items-center justify-center gap-2">
-            <Sparkles className="text-neon-purple" size={24} /> Reveal Summary
+      <main className="flex-1 p-4 sm:p-6 pb-32 overflow-y-auto custom-scrollbar flex flex-col gap-6 relative">
+        <div className="text-center py-2 space-y-1">
+          <h2 className="text-xl sm:text-2xl font-heading font-extrabold text-white flex items-center justify-center gap-2">
+            <Sparkles className="text-red-500" size={22} /> Reveal Summary
           </h2>
-          <p className="text-sm text-gray-400">All entries and their authors for Round {results.roundNumber}</p>
+          <p className="text-xs font-sans font-bold text-zinc-400">All entries and their authors for Round {results.roundNumber}</p>
         </div>
 
         {/* ALL REVEALED ENTRIES IN ONE SINGLE LIST */}
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-4">
           {results.chits.map((chit, index) => (
             <motion.div
               key={chit.chitId}
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="bg-gray-900 border border-gray-800 rounded-2xl p-5 shadow-lg flex flex-col gap-3"
+              transition={{ delay: index * 0.08 }}
             >
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-mono text-gray-400 uppercase tracking-widest">Entry #{index + 1}</span>
-                <div className="flex items-center gap-1.5 bg-electric-blue/10 border border-electric-blue/30 px-3 py-1 rounded-full text-xs font-semibold text-white">
-                  <User size={14} className="text-electric-blue" />
-                  <span>{chit.senderDisplayName}</span>
+              <Card surface="level-2" className="flex flex-col gap-3 border border-zinc-800">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-mono font-extrabold text-zinc-400 uppercase tracking-wider">Entry #{index + 1}</span>
+                  <div className="flex items-center gap-1.5 bg-red-950/90 border border-red-800/70 px-3 py-1 rounded-xl text-xs font-heading font-extrabold text-red-300 clay-badge-tag">
+                    <User size={14} className="text-red-400" />
+                    <span>{chit.senderDisplayName}</span>
+                  </div>
                 </div>
-              </div>
 
-              <div className="py-2 text-center bg-black/40 rounded-xl border border-gray-800">
-                <p className="text-2xl font-heading font-bold text-white tracking-wide">
-                  "{chit.body}"
-                </p>
-              </div>
+                <div className="py-3 text-center clay-surface-inset rounded-2xl p-4 border border-zinc-800">
+                  <p className="text-xl sm:text-2xl font-heading font-black text-white tracking-wide">
+                    "{chit.body}"
+                  </p>
+                </div>
+              </Card>
             </motion.div>
           ))}
         </div>
+
+
       </main>
 
-      <div className="sticky bottom-0 z-30 pb-safe-bottom bg-bg-navy/90 backdrop-blur-md border-t border-white/10 p-4">
+      <BottomActionBar>
         {isOwner ? (
           <Button variant="primary" size="lg" className="w-full" onClick={handleNextRound}>
             <ArrowRight size={20} className="mr-2" /> Start Next Round
@@ -76,7 +81,8 @@ export default function RevealPage() {
             Back to Room
           </Button>
         )}
-      </div>
+      </BottomActionBar>
     </div>
   );
 }
+

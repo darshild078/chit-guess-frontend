@@ -54,7 +54,7 @@ export function MobileMenuDrawer({ isOpen, onClose, roomCode, playerCount }: Mob
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"
+            className="fixed inset-0 z-40 bg-black/80 backdrop-blur-md"
           />
 
           {/* Drawer Content */}
@@ -63,22 +63,23 @@ export function MobileMenuDrawer({ isOpen, onClose, roomCode, playerCount }: Mob
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed top-0 right-0 bottom-0 z-50 w-80 max-w-[85vw] bg-gray-900 border-l border-gray-800 p-6 flex flex-col justify-between shadow-2xl"
+            className="fixed top-0 right-0 bottom-0 z-50 w-80 max-w-[85vw] clay-surface-2 p-6 flex flex-col justify-between shadow-[20px_0_50px_rgba(0,0,0,0.85)] border-l border-zinc-800"
           >
             <div className="space-y-6">
               {/* Header */}
-              <div className="flex items-center justify-between pb-4 border-b border-gray-800">
-                <div className="flex items-center gap-2 text-white font-heading font-bold text-lg">
+              <div className="flex items-center justify-between pb-4 border-b border-zinc-800">
+                <div className="flex items-center gap-2 text-white font-heading font-extrabold text-lg">
                   <span>ChitGuess</span>
                   {isOwner && (
-                    <span className="text-xs bg-electric-blue/20 text-electric-blue px-2 py-0.5 rounded-full flex items-center gap-1 font-mono">
+                    <span className="text-xs bg-amber-950/90 text-orange-300 border border-amber-800/60 px-2.5 py-0.5 rounded-full flex items-center gap-1 font-mono clay-badge-tag">
                       <Shield size={12} /> Host
                     </span>
                   )}
                 </div>
                 <button
                   onClick={onClose}
-                  className="p-2 text-gray-400 hover:text-white rounded-full hover:bg-gray-800 transition-colors"
+                  aria-label="Close menu"
+                  className="p-2 text-zinc-400 hover:text-white rounded-2xl hover:bg-zinc-800 transition-colors cursor-pointer"
                 >
                   <X size={20} />
                 </button>
@@ -86,70 +87,71 @@ export function MobileMenuDrawer({ isOpen, onClose, roomCode, playerCount }: Mob
 
               {/* Room Stats if in a room */}
               {token && (
-                <div className="bg-gray-800/60 rounded-xl p-4 space-y-2 border border-gray-700/50">
+                <div className="clay-surface-inset rounded-2xl p-4 space-y-2 border border-zinc-800">
                   {roomCode && (
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-400 flex items-center gap-1.5">
+                      <span className="text-zinc-400 flex items-center gap-1.5 font-bold">
                         <Hash size={16} /> Room Code
                       </span>
-                      <span className="font-mono font-bold text-electric-blue tracking-wider">
+                      <span className="font-mono font-extrabold text-orange-500 tracking-wider">
                         {roomCode}
                       </span>
                     </div>
                   )}
                   {playerCount !== undefined && (
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-400 flex items-center gap-1.5">
+                      <span className="text-zinc-400 flex items-center gap-1.5 font-bold">
                         <Users size={16} /> Players
                       </span>
-                      <span className="font-medium text-white">{playerCount} Active</span>
+                      <span className="font-extrabold text-white">{playerCount} Active</span>
                     </div>
                   )}
                 </div>
               )}
 
               {/* Navigation Actions */}
-              <div className="space-y-2 pt-2">
+              <div className="space-y-2.5 pt-2">
                 <button
                   onClick={handleHomeClick}
-                  className="w-full flex items-center gap-3 px-4 py-3 text-left font-medium text-gray-200 hover:text-white hover:bg-gray-800 rounded-xl transition-colors"
+                  className="w-full flex items-center gap-3 px-4 py-3 text-left font-heading font-bold text-white clay-button-secondary rounded-2xl transition-all cursor-pointer"
                 >
-                  <Home size={20} className="text-electric-blue" />
+                  <Home size={18} className="text-orange-500" />
                   <span>Home</span>
                 </button>
 
                 {token && isOwner && (
                   <button
                     onClick={handleSettingsClick}
-                    className="w-full flex items-center gap-3 px-4 py-3 text-left font-medium text-gray-200 hover:text-white hover:bg-gray-800 rounded-xl transition-colors"
+                    className="w-full flex items-center gap-3 px-4 py-3 text-left font-heading font-bold text-white clay-button-secondary rounded-2xl transition-all cursor-pointer"
                   >
-                    <Settings size={20} className="text-neon-purple" />
+                    <Settings size={18} className="text-orange-500" />
                     <span>Room Settings</span>
                   </button>
                 )}
 
                 <button
                   onClick={toggleMute}
-                  className="w-full flex items-center justify-between px-4 py-3 text-left font-medium text-gray-200 hover:text-white hover:bg-gray-800 rounded-xl transition-colors"
+                  className="w-full flex items-center justify-between px-4 py-3 text-left font-heading font-bold text-white clay-button-secondary rounded-2xl transition-all cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
                     {muted ? (
-                      <VolumeX size={20} className="text-red-400" />
+                      <VolumeX size={18} className="text-orange-500" />
                     ) : (
-                      <Volume2 size={20} className="text-neon-green" />
+                      <Volume2 size={18} className="text-emerald-400" />
                     )}
                     <span>Sound Effects</span>
                   </div>
-                  <span className="text-xs font-mono text-gray-400">
+                  <span className="text-xs font-mono font-bold text-zinc-400">
                     {muted ? 'MUTED' : 'ON'}
                   </span>
                 </button>
               </div>
+
             </div>
 
             {/* Footer / Leave Room */}
             {token && (
-              <div className="pt-4 border-t border-gray-800">
+              <div className="pt-4 border-t border-zinc-800">
                 <Button variant="danger" size="md" className="w-full" onClick={handleLeaveRoom}>
                   <LogOut size={18} className="mr-2" /> Leave Room
                 </Button>
@@ -161,3 +163,6 @@ export function MobileMenuDrawer({ isOpen, onClose, roomCode, playerCount }: Mob
     </AnimatePresence>
   );
 }
+
+
+

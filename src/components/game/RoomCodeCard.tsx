@@ -5,15 +5,16 @@ import { ShareRoomButton } from './ShareRoomButton';
 
 export function RoomCodeCard({ code }: { code: string }) {
   return (
-    <Card glow className="flex flex-col items-center justify-center p-8 space-y-6">
-      <div className="text-center space-y-2">
-        <h2 className="text-sm font-medium text-gray-400 uppercase tracking-widest">Room Code</h2>
-        <div className="text-6xl font-mono font-bold tracking-widest bg-clip-text text-transparent bg-gradient-to-r from-electric-blue to-neon-purple animate-pulse-glow">
+    <Card surface="level-2" className="flex flex-col items-center justify-center p-6 sm:p-8 space-y-6">
+      <div className="text-center space-y-3 w-full">
+        <h2 className="text-xs font-heading font-extrabold text-zinc-400 uppercase tracking-widest">Room Code</h2>
+        <div className="clay-surface-inset rounded-2xl py-4 px-6 text-4xl sm:text-5xl font-mono font-black tracking-widest text-orange-500 shadow-inner border border-zinc-800">
           {code}
         </div>
       </div>
+
       
-      <div className="flex gap-4 w-full max-w-[280px]">
+      <div className="flex gap-3 w-full max-w-[280px]">
         <div className="flex-1">
           <CopyCodeButton code={code} />
         </div>
@@ -24,3 +25,6 @@ export function RoomCodeCard({ code }: { code: string }) {
     </Card>
   );
 }
+
+
+

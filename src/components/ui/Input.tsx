@@ -24,20 +24,24 @@ export const Input = React.forwardRef<HTMLInputElement | HTMLTextAreaElement, In
     const Component = multiline ? 'textarea' : 'input';
     
     return (
-      <div className="w-full flex flex-col gap-1.5">
-        {label && <label className="text-sm font-medium text-gray-300">{label}</label>}
+      <div className="w-full flex flex-col gap-2">
+        {label && <label className="text-xs font-heading font-bold tracking-wider text-zinc-400 uppercase px-1">{label}</label>}
         <Component
           ref={ref as any}
           className={cn(
-            "w-full bg-bg-navy-light border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-electric-blue focus:ring-1 focus:ring-electric-blue transition-all resize-none",
-            error && "border-error focus:border-error focus:ring-error",
+            "w-full clay-surface-inset rounded-2xl px-4 py-3.5 text-white font-heading font-semibold placeholder-zinc-500 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/70 focus:border-orange-500 transition-all duration-150 resize-none disabled:opacity-50",
+            error && "ring-1 ring-error border-error/80 focus:ring-error",
             className
           )}
+
           {...(props as any)}
         />
-        {error && <span className="text-sm text-error">{error}</span>}
+        {error && <span className="text-xs font-medium text-error px-1">{error}</span>}
       </div>
     );
   }
 );
 Input.displayName = 'Input';
+
+
+

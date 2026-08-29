@@ -13,17 +13,17 @@ export function RevealConfirmationModal({ isOpen, onClose, onConfirm }: RevealCo
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Reveal Identities?">
       <div className="flex flex-col items-center text-center p-2">
-        <div className="w-16 h-16 bg-error/10 text-error rounded-full flex items-center justify-center mb-6">
-          <AlertTriangle size={32} />
+        <div className="w-14 h-14 clay-surface-inset text-red-500 rounded-2xl flex items-center justify-center mb-5 shadow-inner border border-zinc-800">
+          <AlertTriangle size={28} />
         </div>
-        <p className="text-gray-300 mb-8">
+        <p className="text-zinc-300 text-sm font-extrabold leading-relaxed mb-6">
           Are you sure you want to reveal who wrote each chit? This will end the guessing phase and this action cannot be undone for this round.
         </p>
-        <div className="flex w-full gap-4">
-          <Button variant="ghost" onClick={onClose} className="flex-1">
+        <div className="flex w-full gap-3">
+          <Button variant="secondary" onClick={onClose} className="flex-1">
             Cancel
           </Button>
-          <Button variant="danger" onClick={() => { onConfirm(); onClose(); }} className="flex-1 bg-gradient-to-r from-error to-rose-600">
+          <Button variant="danger" onClick={() => { onConfirm(); onClose(); }} className="flex-1">
             Reveal
           </Button>
         </div>
@@ -31,3 +31,6 @@ export function RevealConfirmationModal({ isOpen, onClose, onConfirm }: RevealCo
     </Modal>
   );
 }
+
+
+

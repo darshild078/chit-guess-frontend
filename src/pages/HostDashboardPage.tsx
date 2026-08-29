@@ -14,6 +14,7 @@ import { HostRoomView } from '../types/room.types';
 import { PlayerActivityItem } from '../types/participant.types';
 import { BottomActionBar } from '../components/layout/BottomActionBar';
 import { Button } from '../components/ui/Button';
+import { Card } from '../components/ui/Card';
 import { MessageSquare, Eye } from 'lucide-react';
 
 export default function HostDashboardPage() {
@@ -39,23 +40,23 @@ export default function HostDashboardPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-full">
+    <div className="flex flex-col min-h-full clay-surface-0">
       <MobileHeader title={`Round ${hostRoom.currentRoundNumber}`} />
 
-      <main className="flex-1 p-4 pb-32 overflow-y-auto custom-scrollbar flex flex-col gap-6">
+      <main className="flex-1 p-4 sm:p-6 pb-32 overflow-y-auto custom-scrollbar flex flex-col gap-6">
         <RoundStatusBanner status={hostRoom.status} roundNumber={hostRoom.currentRoundNumber} />
         
-        <div className="py-2">
+        <div className="py-1">
           <SubmissionProgress submittedCount={submittedCount} totalCount={players.length} />
         </div>
 
         {/* SUBMITTED SECRET WORDS */}
         {chits.length > 0 && (
-          <div className="flex flex-col gap-4 bg-gray-900/60 p-4 rounded-2xl border border-electric-blue/30">
-            <h3 className="text-sm font-medium text-electric-blue uppercase tracking-widest flex items-center gap-2">
+          <Card surface="level-2" className="flex flex-col gap-4 border-red-900/60">
+            <h3 className="text-xs font-heading font-extrabold text-red-400 uppercase tracking-wider flex items-center gap-2">
               <MessageSquare size={16} /> Submitted Secret Words ({chits.length})
             </h3>
-            <p className="text-xs text-gray-400">Read each word out loud to the room so players can guess who wrote what!</p>
+            <p className="text-xs text-zinc-300 font-bold">Read each word out loud to the room so players can guess who wrote what!</p>
             
             <div className="flex flex-col gap-3">
               {chits.map((c) => (
@@ -70,13 +71,13 @@ export default function HostDashboardPage() {
             <Button variant="danger" size="lg" className="w-full mt-2" onClick={() => setShowRevealModal(true)}>
               <Eye size={20} className="mr-2" /> Reveal Who Wrote Each Word
             </Button>
-          </div>
+          </Card>
         )}
 
         {/* PLAYER SUBMISSIONS STATUS WITH REAL NAMES */}
         <div className="flex flex-col gap-3">
-          <h3 className="text-sm font-medium text-gray-400 uppercase tracking-widest px-1">Player Submissions Status</h3>
-          <div className="grid gap-2">
+          <h3 className="text-xs font-heading font-extrabold text-zinc-400 uppercase tracking-widest px-1">Player Submissions Status</h3>
+          <div className="grid gap-2.5">
             {players.map(p => (
               <ParticipantStatusCard 
                 key={p.displayName}
@@ -115,3 +116,6 @@ export default function HostDashboardPage() {
     </div>
   );
 }
+
+
+

@@ -43,13 +43,13 @@ export default function PlayerSubmissionPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-full">
+    <div className="flex flex-col min-h-full clay-surface-0">
       <MobileHeader title={`Round ${playerRoom.currentRoundNumber} — Write Your Chit`} />
 
-      <main className="flex-1 p-4 pb-12 overflow-y-auto custom-scrollbar flex flex-col gap-6">
+      <main className="flex-1 p-4 sm:p-6 pb-12 overflow-y-auto custom-scrollbar flex flex-col gap-6">
         <RoundStatusBanner status={playerRoom.status} roundNumber={playerRoom.currentRoundNumber} />
         
-        <div className="py-2">
+        <div className="py-1">
           <SubmissionComposer 
             initialValue={mine?.body || ''}
             isSubmitted={hasSubmitted || false}
@@ -60,8 +60,10 @@ export default function PlayerSubmissionPage() {
         </div>
 
         <div className="flex flex-col gap-3">
-          <h3 className="text-sm font-medium text-gray-400 uppercase tracking-widest px-1">Players</h3>
-          <div className="grid gap-2">
+          <h3 className="text-xs font-heading font-extrabold text-zinc-400 uppercase tracking-widest px-1">Players</h3>
+          <div className="grid gap-2.5">
+
+
             {players.map(p => (
               <ParticipantStatusCard 
                 key={p.displayName}
@@ -77,3 +79,4 @@ export default function PlayerSubmissionPage() {
     </div>
   );
 }
+

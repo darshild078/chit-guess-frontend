@@ -53,31 +53,35 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
 
 function ToastItem({ toast, onRemove }: { toast: Toast; onRemove: () => void }) {
   const icons = {
-    success: <CheckCircle2 className="text-neon-green" size={20} />,
-    error: <XCircle className="text-error" size={20} />,
-    info: <Info className="text-electric-blue" size={20} />,
-    warning: <AlertTriangle className="text-warning" size={20} />
+    success: <CheckCircle2 className="text-emerald-400" size={18} />,
+    error: <XCircle className="text-orange-500" size={18} />,
+    info: <Info className="text-orange-400" size={18} />,
+    warning: <AlertTriangle className="text-amber-400" size={18} />
   };
 
   const bgs = {
-    success: 'bg-neon-green/10 border-neon-green/20',
-    error: 'bg-error/10 border-error/20',
-    info: 'bg-electric-blue/10 border-electric-blue/20',
-    warning: 'bg-warning/10 border-warning/20'
+    success: 'border-emerald-500/30',
+    error: 'border-orange-500/30',
+    info: 'border-orange-500/30',
+    warning: 'border-amber-500/30'
   };
+
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: -20, scale: 0.9 }}
+      initial={{ opacity: 0, y: -16, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: -20, scale: 0.9 }}
-      className={`pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-xl border backdrop-blur-md shadow-lg max-w-sm w-full ${bgs[toast.type]}`}
+      exit={{ opacity: 0, y: -16, scale: 0.95 }}
+      className={`pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-2xl clay-surface-2 shadow-[8px_8px_24px_rgba(0,0,0,0.8)] max-w-sm w-full border ${bgs[toast.type]}`}
     >
       {icons[toast.type]}
-      <p className="flex-1 text-sm font-medium text-white">{toast.message}</p>
-      <button onClick={onRemove} className="text-gray-400 hover:text-white">
-        <X size={16} />
+      <p className="flex-1 text-xs font-heading font-extrabold text-white">{toast.message}</p>
+      <button onClick={onRemove} className="p-1 text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-800 transition-colors">
+        <X size={14} />
       </button>
     </motion.div>
   );
 }
+
+
+

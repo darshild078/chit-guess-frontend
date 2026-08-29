@@ -40,25 +40,27 @@ export function SubmissionComposer({ initialValue = '', isSubmitted, isClosed, o
 
   if (isClosed) {
     return (
-      <Card className="text-center p-6 border-gray-700 bg-gray-900">
-        <h3 className="text-lg font-medium text-gray-300 mb-2">Submissions are closed</h3>
-        <p className="text-sm text-gray-500">The host is now reading the secret word chits in the inbox.</p>
+      <Card surface="level-2" className="text-center p-6 border-zinc-800">
+        <h3 className="text-base font-heading font-extrabold text-white mb-1">Submissions are closed</h3>
+        <p className="text-xs text-zinc-400 font-extrabold">The host is now reading the secret word chits in the inbox.</p>
       </Card>
     );
   }
 
   if (isSubmitted) {
     return (
-      <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}>
-        <Card className="p-6 border-neon-green/30 bg-neon-green/5 space-y-4">
-          <div className="flex items-center gap-3 text-neon-green">
-            <CheckCircle2 size={24} />
-            <h3 className="font-medium text-lg">Secret Word Submitted!</h3>
+      <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }}>
+        <Card surface="level-2" className="p-6 border-emerald-800/60 space-y-4">
+          <div className="flex items-center gap-3 text-emerald-400">
+            <CheckCircle2 size={22} />
+            <h3 className="font-heading font-extrabold text-base text-white">Secret Word Submitted!</h3>
           </div>
-          <p className="text-2xl font-bold font-heading text-white tracking-wide">"{initialValue}"</p>
-          <div className="flex gap-3 pt-4 border-t border-white/10">
+          <div className="clay-surface-inset rounded-2xl p-4 text-center border border-zinc-800">
+            <p className="text-2xl font-black font-heading text-white tracking-wide">"{initialValue}"</p>
+          </div>
+          <div className="flex gap-3 pt-3 border-t border-zinc-800">
             {onEdit && (
-              <Button variant="ghost" size="sm" onClick={onEdit} className="flex-1">
+              <Button variant="secondary" size="sm" onClick={onEdit} className="flex-1">
                 <Edit2 size={16} className="mr-2" /> Edit
               </Button>
             )}
@@ -76,10 +78,12 @@ export function SubmissionComposer({ initialValue = '', isSubmitted, isClosed, o
   const { ref, onChange, ...bodyRegisterProps } = register('body');
 
   return (
-    <Card glow className="p-1">
-      <form onSubmit={handleSubmit((data) => onSubmit(data.body))} className="p-5 flex flex-col gap-4">
-        <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium text-gray-300">Your Secret Word</label>
+    <Card surface="level-2" className="p-1 sm:p-2 border border-zinc-800">
+      <form onSubmit={handleSubmit((data) => onSubmit(data.body))} className="p-4 sm:p-5 flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
+          <label className="text-xs font-heading font-extrabold uppercase tracking-wider text-zinc-400 px-1">
+            Your Secret Word
+          </label>
           <div className="relative">
             <Input
               placeholder="Type ONE word (e.g. Pineapple)..."
@@ -91,16 +95,16 @@ export function SubmissionComposer({ initialValue = '', isSubmitted, isClosed, o
               }}
               onKeyDown={handleKeyDown}
               error={errors.body?.message}
-              className="w-full text-xl font-semibold tracking-wide pr-14"
+              className="w-full text-lg font-heading font-bold tracking-wide pr-14"
               maxLength={30}
               autoComplete="off"
             />
-            <div className="absolute right-3 top-3 text-xs font-mono text-gray-500">
+            <div className="absolute right-3.5 top-3.5 text-xs font-mono font-bold text-zinc-500">
               {body.length}/30
             </div>
           </div>
-          <p className="text-xs text-gray-400 mt-1">
-            ⚠️ <strong>One word only:</strong> Letters only. No spaces, numbers, or special characters.
+          <p className="text-xs text-zinc-400 font-extrabold px-1">
+            ⚠️ <strong className="text-white">One word only:</strong> Letters only. No spaces or special characters.
           </p>
         </div>
 
@@ -111,3 +115,6 @@ export function SubmissionComposer({ initialValue = '', isSubmitted, isClosed, o
     </Card>
   );
 }
+
+
+

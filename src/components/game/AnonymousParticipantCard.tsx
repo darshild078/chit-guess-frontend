@@ -11,23 +11,23 @@ interface AnonymousParticipantCardProps {
 
 export function AnonymousParticipantCard({ alias, hasSubmitted, connected }: AnonymousParticipantCardProps) {
   return (
-    <Card className="p-4 flex items-center gap-4 border border-gray-800 bg-gray-900/50">
+    <Card surface="level-1" className="p-3.5 sm:p-4 flex items-center gap-3.5 border border-zinc-800/80">
       <div className="relative inline-flex">
-        <div className="w-12 h-12 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-gray-400">
-          <UserRound size={24} />
+        <div className="w-11 h-11 rounded-2xl clay-surface-inset flex items-center justify-center text-zinc-400 shadow-inner border border-zinc-800">
+          <UserRound size={20} />
         </div>
         <div
-          className={`absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-bg-navy ${
-            connected ? "bg-neon-green" : "bg-gray-500"
+          className={`absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-zinc-950 ${
+            connected ? "bg-emerald-500" : "bg-zinc-600"
           }`}
         />
       </div>
       
       <div className="flex-1 min-w-0">
-        <h3 className="text-gray-200 font-medium font-mono truncate">
+        <h3 className="text-white font-heading font-extrabold text-sm font-mono truncate">
           {alias}
         </h3>
-        <p className="text-sm text-gray-500">
+        <p className="text-xs text-zinc-400 font-bold">
           {connected ? 'Online' : 'Disconnected'}
         </p>
       </div>
@@ -42,3 +42,6 @@ export function AnonymousParticipantCard({ alias, hasSubmitted, connected }: Ano
     </Card>
   );
 }
+
+
+

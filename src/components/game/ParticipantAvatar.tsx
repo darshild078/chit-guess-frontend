@@ -8,8 +8,8 @@ interface ParticipantAvatarProps {
 }
 
 const colors = [
-  'bg-blue-500', 'bg-purple-500', 'bg-emerald-500', 'bg-rose-500',
-  'bg-amber-500', 'bg-cyan-500', 'bg-indigo-500', 'bg-fuchsia-500'
+  'bg-red-700', 'bg-zinc-700', 'bg-rose-700', 'bg-red-800',
+  'bg-emerald-700', 'bg-amber-700', 'bg-zinc-800', 'bg-red-600'
 ];
 
 function getColorForName(name: string) {
@@ -26,22 +26,24 @@ export function ParticipantAvatar({ name, online = true, size = 'md' }: Particip
 
   const sizes = {
     sm: 'w-8 h-8 text-xs',
-    md: 'w-12 h-12 text-sm',
-    lg: 'w-16 h-16 text-lg',
+    md: 'w-11 h-11 text-sm',
+    lg: 'w-14 h-14 text-base',
   };
 
   return (
     <div className="relative inline-block">
-      <div className={cn("rounded-full flex items-center justify-center text-white font-bold font-heading shadow-inner border border-white/10", sizes[size], bgColor)}>
+      <div className={cn("rounded-2xl flex items-center justify-center text-white font-extrabold font-heading shadow-md border border-zinc-700/50", sizes[size], bgColor)}>
         {initials}
       </div>
       <div
         className={cn(
-          "absolute bottom-0 right-0 rounded-full border-2 border-bg-navy",
-          online ? "bg-neon-green" : "bg-gray-500",
+          "absolute bottom-0 right-0 rounded-full border-2 border-zinc-950",
+          online ? "bg-emerald-500" : "bg-zinc-600",
           size === 'sm' ? "w-2.5 h-2.5" : "w-3.5 h-3.5"
         )}
       />
     </div>
   );
 }
+
+

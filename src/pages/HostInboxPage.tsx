@@ -8,6 +8,7 @@ import { roomApi } from '../services/room.api';
 import { inboxApi } from '../services/inbox.api';
 import { LoadingState } from '../components/feedback/LoadingState';
 import { Button } from '../components/ui/Button';
+import { BottomActionBar } from '../components/layout/BottomActionBar';
 
 export default function HostInboxPage() {
   const { data: inbox, isLoading: inboxLoading, refetch } = useInbox();
@@ -26,13 +27,15 @@ export default function HostInboxPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-full">
+    <div className="flex flex-col min-h-full clay-surface-0">
       <MobileHeader 
         title="Anonymous Secret Words" 
         rightAction={
-          <button onClick={() => refetch()} className="p-2 text-gray-400 hover:text-white rounded-full">
-            <RefreshCw size={20} />
+          <button onClick={() => refetch()} className="p-2 text-zinc-300 hover:text-white rounded-2xl clay-button-secondary transition-all cursor-pointer">
+            <RefreshCw size={18} />
           </button>
+
+
         }
       />
 
@@ -44,11 +47,11 @@ export default function HostInboxPage() {
       </main>
       
       {chits.length > 0 && (
-        <div className="p-4 bg-black z-20">
+        <BottomActionBar>
           <Button variant="danger" size="lg" className="w-full" onClick={() => setShowRevealModal(true)}>
             <Eye size={20} className="mr-2" /> Reveal Who Wrote Each Word
           </Button>
-        </div>
+        </BottomActionBar>
       )}
       
       <RevealConfirmationModal 
@@ -59,3 +62,4 @@ export default function HostInboxPage() {
     </div>
   );
 }
+

@@ -61,9 +61,10 @@ export function HostControlPanel({
           <Button variant="primary" size="lg" onClick={onNextRound} className="w-full">
             <ArrowRight size={20} className="mr-2" /> Next Round
           </Button>
-          <Button variant="ghost" size="md" onClick={onEndRoom} className="w-full">
+          <Button variant="secondary" size="md" onClick={onEndRoom} className="w-full">
             <Flag size={18} className="mr-2" /> End Room
           </Button>
+
         </div>
       );
     default:

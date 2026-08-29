@@ -19,25 +19,27 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
+            className="fixed inset-0 bg-black/80 backdrop-blur-md z-40"
           />
           <div className="fixed inset-0 pointer-events-none z-50 flex items-center justify-center p-4 safe-top safe-bottom">
             <motion.div
-              initial={{ opacity: 0, y: 20, scale: 0.95 }}
+              initial={{ opacity: 0, y: 16, scale: 0.96 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 20, scale: 0.95 }}
-              className="bg-bg-navy border border-gray-800 rounded-2xl shadow-2xl w-full max-w-md pointer-events-auto overflow-hidden flex flex-col max-h-[90vh]"
+              exit={{ opacity: 0, y: 16, scale: 0.96 }}
+              transition={{ duration: 0.2 }}
+              className="clay-surface-2 rounded-3xl w-full max-w-md pointer-events-auto overflow-hidden flex flex-col max-h-[85vh] shadow-[16px_16px_40px_rgba(0,0,0,0.8)] border border-zinc-800"
             >
-              <div className="flex items-center justify-between p-4 border-b border-gray-800">
-                <h2 className="text-lg font-heading font-semibold text-white">{title}</h2>
+              <div className="flex items-center justify-between p-5 border-b border-zinc-800">
+                <h2 className="text-lg font-heading font-extrabold text-white tracking-wide">{title}</h2>
                 <button
                   onClick={onClose}
-                  className="p-2 -mr-2 text-gray-400 hover:text-white rounded-full hover:bg-white/5 transition-colors"
+                  aria-label="Close modal"
+                  className="p-2 -mr-2 text-zinc-400 hover:text-white rounded-2xl hover:bg-zinc-800 transition-colors cursor-pointer"
                 >
-                  <X size={20} />
+                  <X size={18} />
                 </button>
               </div>
-              <div className="p-4 overflow-y-auto custom-scrollbar">
+              <div className="p-5 overflow-y-auto custom-scrollbar text-zinc-300">
                 {children}
               </div>
             </motion.div>
@@ -47,3 +49,6 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
     </AnimatePresence>
   );
 }
+
+
+

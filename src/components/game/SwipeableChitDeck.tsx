@@ -13,7 +13,7 @@ export function SwipeableChitDeck({ chits, onMarkRead }: SwipeableChitDeckProps)
   const [currentIndex, setCurrentIndex] = useState(0);
 
   if (!chits || chits.length === 0) {
-    return <div className="text-center text-gray-500 p-8">No secret word chits available.</div>;
+    return <div className="text-center text-zinc-400 font-extrabold p-8">No secret word chits available.</div>;
   }
 
   const handleNext = () => {
@@ -35,9 +35,9 @@ export function SwipeableChitDeck({ chits, onMarkRead }: SwipeableChitDeckProps)
         <AnimatePresence mode="wait">
           <motion.div
             key={currentChit.anonymousChitId}
-            initial={{ opacity: 0, x: 50, scale: 0.9 }}
+            initial={{ opacity: 0, x: 40, scale: 0.96 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
-            exit={{ opacity: 0, x: -50, scale: 0.9 }}
+            exit={{ opacity: 0, x: -40, scale: 0.96 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
             className="w-full absolute"
             drag="x"
@@ -57,25 +57,30 @@ export function SwipeableChitDeck({ chits, onMarkRead }: SwipeableChitDeckProps)
         </AnimatePresence>
       </div>
 
-      <div className="flex items-center justify-between p-6 bg-bg-navy/90 backdrop-blur pb-safe-bottom">
+      <div className="flex items-center justify-between p-6 clay-surface-1 rounded-t-3xl border-t border-zinc-800 pb-safe-bottom shadow-[0_-8px_24px_rgba(0,0,0,0.75)]">
         <button 
           onClick={handlePrev} 
           disabled={currentIndex === 0}
-          className="p-3 rounded-full bg-gray-800 text-white disabled:opacity-30 disabled:pointer-events-none hover:bg-gray-700 transition-colors"
+          aria-label="Previous chit"
+          className="w-12 h-12 rounded-2xl clay-button-secondary text-white disabled:opacity-30 disabled:pointer-events-none transition-all flex items-center justify-center cursor-pointer"
         >
-          <ChevronLeft size={24} />
+          <ChevronLeft size={22} />
         </button>
-        <div className="font-mono text-gray-400 font-medium">
+        <div className="font-mono font-extrabold text-zinc-300 clay-surface-inset px-4 py-2 rounded-xl text-xs tracking-wider border border-zinc-800">
           {currentIndex + 1} / {chits.length}
         </div>
         <button 
           onClick={handleNext} 
           disabled={currentIndex === chits.length - 1}
-          className="p-3 rounded-full bg-electric-blue text-white disabled:opacity-30 disabled:pointer-events-none hover:bg-electric-blue-light transition-colors shadow-lg shadow-electric-blue/20"
+          aria-label="Next chit"
+          className="w-12 h-12 rounded-2xl clay-button-primary text-white disabled:opacity-30 disabled:pointer-events-none transition-all flex items-center justify-center cursor-pointer"
         >
-          <ChevronRight size={24} />
+          <ChevronRight size={22} />
         </button>
       </div>
     </div>
   );
 }
+
+
+

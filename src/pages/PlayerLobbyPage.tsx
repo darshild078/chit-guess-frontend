@@ -12,6 +12,7 @@ import { PlayerActivityItem } from '../types/participant.types';
 import { useAuthStore } from '../stores/auth.store';
 import { socketService } from '../services/socket';
 import { Spinner } from '../components/ui/Spinner';
+import { BottomActionBar } from '../components/layout/BottomActionBar';
 
 export default function PlayerLobbyPage() {
   const { data: room, isLoading, isError, refetch } = useRoomView();
@@ -31,30 +32,30 @@ export default function PlayerLobbyPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-full">
+    <div className="flex flex-col min-h-full clay-surface-0">
       <MobileHeader 
         title={playerRoom.title || "ChitGuess"} 
         rightAction={
-          <button onClick={() => setShowLeave(true)} className="p-2 text-gray-400 hover:text-white rounded-full">
-            <LogOut size={20} />
+          <button onClick={() => setShowLeave(true)} className="p-2 text-zinc-300 hover:text-white rounded-2xl clay-button-secondary transition-all cursor-pointer">
+            <LogOut size={18} />
           </button>
         }
       />
 
-      <main className="flex-1 p-4 pb-24 overflow-y-auto custom-scrollbar flex flex-col gap-6">
-        <div className="text-center mb-2">
-          <p className="text-gray-400">Host: <span className="text-white font-medium">{playerRoom.hostDisplayName}</span></p>
+      <main className="flex-1 p-4 sm:p-6 pb-28 overflow-y-auto custom-scrollbar flex flex-col gap-6">
+        <div className="text-center mb-1">
+          <p className="text-xs font-heading font-bold text-zinc-400">Host: <span className="text-white font-extrabold">{playerRoom.hostDisplayName}</span></p>
         </div>
 
         <RoomCodeCard code={playerRoom.roomCode} />
 
         <div className="flex flex-col gap-3">
-          <h3 className="text-sm font-medium text-gray-400 uppercase tracking-widest px-1 flex justify-between">
+          <h3 className="text-xs font-heading font-extrabold text-zinc-400 uppercase tracking-widest px-1 flex justify-between">
             <span>Players</span>
-            <span>{playerRoom.playerCount}/{playerRoom.maxPlayers}</span>
+            <span className="font-mono">{playerRoom.playerCount}/{playerRoom.maxPlayers}</span>
           </h3>
           
-          <div className="grid gap-2">
+          <div className="grid gap-2.5">
             {players.map(p => (
               <ParticipantStatusCard 
                 key={p.displayName}
@@ -68,12 +69,17 @@ export default function PlayerLobbyPage() {
         </div>
       </main>
 
-      <div className="sticky bottom-0 z-30 pb-safe-bottom bg-bg-navy/90 backdrop-blur-md border-t border-white/5 p-6 flex flex-col items-center justify-center">
-        <Spinner className="w-8 h-8 mb-3" />
-        <p className="text-gray-300 font-medium">Waiting for host to start...</p>
-      </div>
+      <BottomActionBar>
+        <div className="flex items-center justify-center gap-3 py-1">
+          <Spinner className="w-5 h-5 text-red-500" />
+          <p className="text-xs font-heading font-extrabold text-zinc-300 tracking-wide">Waiting for host to start...</p>
+        </div>
+      </BottomActionBar>
 
       <LeaveRoomModal isOpen={showLeave} onClose={() => setShowLeave(false)} onConfirm={handleLeave} />
     </div>
   );
 }
+
+
+

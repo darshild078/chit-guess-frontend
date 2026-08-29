@@ -40,12 +40,13 @@ export default function CreateRoomPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-[100dvh]">
+    <div className="flex flex-col h-full clay-surface-0 overflow-hidden">
       <MobileHeader title="Create Room" showBack />
       
-      <main className="flex-1 p-4 pb-safe-bottom">
-        <Card>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <main className="flex-1 p-4 sm:p-6 pb-safe-bottom flex flex-col justify-center overflow-y-auto custom-scrollbar">
+
+        <Card surface="level-1" className="w-full border border-zinc-800">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <Input
               label="Your Display Name"
               placeholder="e.g. Alex"
@@ -60,23 +61,25 @@ export default function CreateRoomPage() {
               error={errors.title?.message}
             />
             
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-300 flex justify-between">
+            <div className="space-y-2.5">
+              <label className="text-xs font-heading font-extrabold uppercase tracking-wider text-zinc-400 flex justify-between px-1">
                 <span>Max Players</span>
-                <span className="text-electric-blue flex items-center gap-1">
+                <span className="text-red-500 flex items-center gap-1.5 font-black">
                   <Users size={14} /> {maxPlayersValue}
                 </span>
               </label>
-              <input 
-                type="range" 
-                min="3" max="20" 
-                className="w-full accent-electric-blue h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
-                {...register('maxPlayers', { valueAsNumber: true })} 
-              />
-              {errors.maxPlayers && <span className="text-sm text-error">{errors.maxPlayers.message}</span>}
+              <div className="clay-surface-inset rounded-xl p-3 shadow-inner border border-zinc-800">
+                <input 
+                  type="range" 
+                  min="3" max="20" 
+                  className="w-full accent-red-500 h-2 rounded-lg appearance-none cursor-pointer"
+                  {...register('maxPlayers', { valueAsNumber: true })} 
+                />
+              </div>
+              {errors.maxPlayers && <span className="text-xs font-medium text-error px-1">{errors.maxPlayers.message}</span>}
             </div>
 
-            <div className="pt-4">
+            <div className="pt-3">
               <Button type="submit" variant="primary" size="lg" isLoading={isSubmitting} className="w-full">
                 Create Room
               </Button>
@@ -87,3 +90,6 @@ export default function CreateRoomPage() {
     </div>
   );
 }
+
+
+
