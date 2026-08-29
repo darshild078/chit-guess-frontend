@@ -10,7 +10,7 @@ import { Card } from '../components/ui/Card';
 import { roomApi } from '../services/room.api';
 import { useAuthStore } from '../stores/auth.store';
 import { useToast } from '../components/ui/Toast';
-import { Users } from 'lucide-react';
+import { Users, Trophy } from 'lucide-react';
 
 export default function CreateRoomPage() {
   const navigate = useNavigate();
@@ -19,10 +19,11 @@ export default function CreateRoomPage() {
   
   const { register, handleSubmit, watch, formState: { errors, isSubmitting } } = useForm<CreateRoomFormData>({
     resolver: zodResolver(createRoomSchema),
-    defaultValues: { maxPlayers: 10 }
+    defaultValues: { maxPlayers: 10, totalRounds: 3 }
   });
 
   const maxPlayersValue = watch('maxPlayers') || 10;
+  const totalRoundsValue = watch('totalRounds') || 3;
 
   const onSubmit = async (data: CreateRoomFormData) => {
     try {
@@ -44,7 +45,6 @@ export default function CreateRoomPage() {
       <MobileHeader title="Create Room" showBack />
       
       <main className="flex-1 p-4 sm:p-6 pb-safe-bottom flex flex-col justify-center overflow-y-auto custom-scrollbar">
-
         <Card surface="level-1" className="w-full border border-zinc-800">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <Input
@@ -60,19 +60,39 @@ export default function CreateRoomPage() {
               {...register('title')}
               error={errors.title?.message}
             />
+
+            {/* Total Rounds Slider */}
+            <div className="space-y-2.5">
+              <label className="text-xs font-heading font-extrabold uppercase tracking-wider text-zinc-400 flex justify-between px-1">
+                <span>Total Game Rounds</span>
+                <span className="text-orange-500 flex items-center gap-1.5 font-black">
+                  <Trophy size={14} /> {totalRoundsValue} {totalRoundsValue === 1 ? 'Round' : 'Rounds'}
+                </span>
+              </label>
+              <div className="clay-surface-inset rounded-xl p-3 shadow-inner border border-zinc-800">
+                <input 
+                  type="range" 
+                  min="1" max="10" 
+                  className="w-full accent-orange-500 h-2 rounded-lg appearance-none cursor-pointer"
+                  {...register('totalRounds', { valueAsNumber: true })} 
+                />
+              </div>
+              {errors.totalRounds && <span className="text-xs font-medium text-error px-1">{errors.totalRounds.message}</span>}
+            </div>
             
+            {/* Max Players Slider */}
             <div className="space-y-2.5">
               <label className="text-xs font-heading font-extrabold uppercase tracking-wider text-zinc-400 flex justify-between px-1">
                 <span>Max Players</span>
-                <span className="text-red-500 flex items-center gap-1.5 font-black">
+                <span className="text-orange-500 flex items-center gap-1.5 font-black">
                   <Users size={14} /> {maxPlayersValue}
                 </span>
               </label>
               <div className="clay-surface-inset rounded-xl p-3 shadow-inner border border-zinc-800">
                 <input 
                   type="range" 
-                  min="3" max="20" 
-                  className="w-full accent-red-500 h-2 rounded-lg appearance-none cursor-pointer"
+                  min="2" max="20" 
+                  className="w-full accent-orange-500 h-2 rounded-lg appearance-none cursor-pointer"
                   {...register('maxPlayers', { valueAsNumber: true })} 
                 />
               </div>
@@ -90,6 +110,3 @@ export default function CreateRoomPage() {
     </div>
   );
 }
-
-
-

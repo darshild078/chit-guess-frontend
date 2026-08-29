@@ -1,13 +1,13 @@
 import { api } from './api';
 import { RoomCreatedResponse, RoomJoinedResponse } from '../types/api.types';
 import { RoomView } from '../types/room.types';
-import { ActivityItem } from '../types/participant.types';
+import { ActivityItem, PlayerActivityItem } from '../types/participant.types';
 import { useAuthStore } from '../stores/auth.store';
 
 const getRoomId = () => useAuthStore.getState().roomId;
 
 export const roomApi = {
-  create: (data: { hostDisplayName: string; title?: string; maxPlayers: number }) => 
+  create: (data: { hostDisplayName: string; title?: string; maxPlayers: number; totalRounds?: number }) => 
     api.post('/rooms', data) as Promise<RoomCreatedResponse>,
     
   join: (data: { roomCode: string; displayName: string }) => 
@@ -22,12 +22,17 @@ export const roomApi = {
   getActivity: () => {
     const roomId = getRoomId();
     if (!roomId) return Promise.resolve([]);
-    return api.get(`/rooms/${roomId}/activity`) as Promise<ActivityItem[]>;
+    return api.get(`/rooms/${roomId}/activity`) as Promise<PlayerActivityItem[]>;
   },
     
   startRound: () => {
     const roomId = getRoomId();
     return api.post(`/rooms/${roomId}/rounds`);
+  },
+
+  nextRound: () => {
+    const roomId = getRoomId();
+    return api.post(`/rooms/${roomId}/next-round`);
   },
     
   openSubmissions: () => {
@@ -68,5 +73,10 @@ export const roomApi = {
   lockRoom: (locked: boolean) => {
     const roomId = getRoomId();
     return api.post(`/rooms/${roomId}/lock`, { locked });
+  },
+
+  updateSettings: (data: { totalRounds?: number; maxPlayers?: number }) => {
+    const roomId = getRoomId();
+    return api.patch(`/rooms/${roomId}/settings`, data);
   },
 };

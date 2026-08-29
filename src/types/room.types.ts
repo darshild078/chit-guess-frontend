@@ -8,6 +8,7 @@ export interface HostRoomView {
   title: string | null;
   status: RoomStatus;
   currentRoundNumber: number;
+  totalRounds: number;
   playerCount: number;
   maxPlayers: number;
   locked: boolean;
@@ -21,6 +22,7 @@ export interface PlayerRoomView {
   title: string | null;
   status: RoomStatus;
   currentRoundNumber: number;
+  totalRounds: number;
   playerCount: number;
   maxPlayers: number;
   locked: boolean;
