@@ -5,6 +5,9 @@ export const createRoomSchema = z.object({
   title: z.string().max(50, 'Title is too long').trim().optional().or(z.literal('')),
   maxPlayers: z.number().min(2, 'At least 2 players').max(20, 'Max 20 players').default(10),
   totalRounds: z.number().min(1, 'At least 1 round').max(10, 'Max 10 rounds').default(3),
+  gameMode: z.enum(['confessions', 'chameleon', 'roasts']).default('confessions'),
+  promptCategory: z.string().default('general'),
+  customPrompt: z.string().max(150, 'Custom prompt is too long').optional().or(z.literal('')),
 });
 export type CreateRoomFormData = z.infer<typeof createRoomSchema>;
 

@@ -9,6 +9,10 @@ class SocketService {
   private socket: Socket<ServerToClientEvents, ClientToServerEvents> | null = null;
   private eventHandlers: Map<string, Set<Function>> = new Map();
 
+  getRawSocket(): Socket<ServerToClientEvents, ClientToServerEvents> | null {
+    return this.socket;
+  }
+
   connect() {
     if (this.socket?.connected) return;
 
@@ -63,7 +67,7 @@ class SocketService {
     });
 
     // Delegate events to our local event bus
-    const events: (keyof ServerToClientEvents)[] = [
+    const events: string[] = [
       'room:state-updated',
       'room:player-joined',
       'room:player-left',
@@ -79,6 +83,7 @@ class SocketService {
       'player:removed',
       'room:ended',
       'room:round-started',
+      'reaction:received',
     ];
 
     events.forEach(event => {
@@ -88,7 +93,7 @@ class SocketService {
     });
   }
 
-  on<K extends keyof ServerToClientEvents>(event: K, handler: ServerToClientEvents[K]) {
+  on(event: string, handler: Function) {
     if (!this.eventHandlers.has(event)) {
       this.eventHandlers.set(event, new Set());
     }
@@ -99,10 +104,16 @@ class SocketService {
     };
   }
 
-  off<K extends keyof ServerToClientEvents>(event: K, handler: ServerToClientEvents[K]) {
+  off(event: string, handler: Function) {
     const handlers = this.eventHandlers.get(event);
     if (handlers) {
       handlers.delete(handler);
+    }
+  }
+
+  emit(event: string, data?: any) {
+    if (this.socket && this.socket.connected) {
+      this.socket.emit(event as any, data);
     }
   }
 
@@ -119,3 +130,4 @@ class SocketService {
 }
 
 export const socketService = new SocketService();
+export const getSocket = () => socketService.getRawSocket();

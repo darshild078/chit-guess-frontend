@@ -17,6 +17,11 @@ export const guessApi = {
     return api.post(`/rooms/${roomId}/round/guesses`, { guesses });
   },
 
+  chameleonGuessWord: (word: string) => {
+    const roomId = getRoomId();
+    return api.post(`/rooms/${roomId}/round/chameleon-guess`, { word });
+  },
+
   getRoundResults: () => {
     const roomId = getRoomId();
     if (!roomId) return Promise.resolve(null);

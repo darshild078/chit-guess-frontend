@@ -1,19 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Trophy, Crown, Medal, Home, RotateCcw, Sparkles } from 'lucide-react';
+import { Trophy, Crown, Medal, Home, Sparkles, Share2, Award, Check } from 'lucide-react';
 import { MobileHeader } from '../components/layout/MobileHeader';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { BottomActionBar } from '../components/layout/BottomActionBar';
 import { LoadingState } from '../components/feedback/LoadingState';
+import { LiveReactionBar } from '../components/game/LiveReactionBar';
+import { useToast } from '../components/ui/Toast';
 import { guessApi } from '../services/guess.api';
 import { useAuthStore } from '../stores/auth.store';
 import { triggerConfetti } from '../utils/confetti';
 
 export default function FinalPodiumPage() {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const clearSession = useAuthStore(s => s.clearSession);
 
   const { data: leaderboard, isLoading } = useQuery({
@@ -21,9 +24,16 @@ export default function FinalPodiumPage() {
     queryFn: guessApi.getLeaderboard,
   });
 
+  const { data: results } = useQuery({
+    queryKey: ['roundResults'],
+    queryFn: guessApi.getRoundResults,
+  });
+
+  const [copiedShare, setCopiedShare] = useState(false);
+
   useEffect(() => {
     triggerConfetti();
-    const timer = setTimeout(() => triggerConfetti(), 1500);
+    const timer = setTimeout(() => triggerConfetti(), 1200);
     return () => clearTimeout(timer);
   }, []);
 
@@ -33,17 +43,39 @@ export default function FinalPodiumPage() {
   const secondPlace = leaderboard[1];
   const thirdPlace = leaderboard[2];
   const restPlayers = leaderboard.slice(3);
+  const awards = results?.awards || [];
 
   const handleGoHome = () => {
     clearSession();
     navigate('/');
   };
 
+  const handleShareGame = () => {
+    const recapText = [
+      `🎉 ChitGuess Party Game Recap!`,
+      `👑 1st Place: ${firstPlace ? `${firstPlace.displayName} (${firstPlace.score} PTS)` : 'N/A'}`,
+      secondPlace ? `🥈 2nd Place: ${secondPlace.displayName} (${secondPlace.score} PTS)` : null,
+      thirdPlace ? `🥉 3rd Place: ${thirdPlace.displayName} (${thirdPlace.score} PTS)` : null,
+      ``,
+      awards.length > 0 ? `🎖️ Awards Ceremony:` : null,
+      ...awards.map(a => `${a.emoji} ${a.title}: ${a.recipientDisplayName}`),
+      ``,
+      `Play ChitGuess with your friends at ${window.location.origin}!`,
+    ].filter(Boolean).join('\n');
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(recapText);
+      setCopiedShare(true);
+      toast('Recap copied to clipboard! 📋 Share with friends on WhatsApp/Discord!', 'success');
+      setTimeout(() => setCopiedShare(false), 3000);
+    }
+  };
+
   return (
-    <div className="flex flex-col min-h-full clay-surface-0">
+    <div className="flex flex-col min-h-full clay-surface-0 relative pb-28">
       <MobileHeader title="Game Complete — Winners!" />
 
-      <main className="flex-1 p-4 sm:p-6 pb-32 overflow-y-auto custom-scrollbar flex flex-col gap-6 items-center">
+      <main className="flex-1 p-4 sm:p-6 overflow-y-auto custom-scrollbar flex flex-col gap-6 items-center max-w-lg mx-auto w-full">
         {/* Celebration Tagline */}
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
@@ -51,13 +83,13 @@ export default function FinalPodiumPage() {
           className="text-center space-y-1"
         >
           <span className="text-xs font-mono font-black uppercase tracking-widest text-orange-400 bg-orange-950/80 border border-orange-800/60 px-3 py-1 rounded-full inline-flex items-center gap-1">
-            <Sparkles size={14} /> Final Leaderboard
+            <Sparkles size={14} /> Party Champions
           </span>
           <h2 className="text-2xl font-heading font-black text-white">Victory Podium</h2>
         </motion.div>
 
         {/* Podium Display */}
-        <div className="w-full max-w-sm flex items-end justify-center gap-2 pt-8">
+        <div className="w-full max-w-sm flex items-end justify-center gap-2 pt-6">
           {/* 2nd Place */}
           {secondPlace && (
             <motion.div 
@@ -117,12 +149,57 @@ export default function FinalPodiumPage() {
           )}
         </div>
 
+        {/* Awards Ceremony Badges */}
+        {awards.length > 0 && (
+          <div className="w-full space-y-2.5 pt-2">
+            <h4 className="text-xs font-heading font-extrabold text-zinc-400 uppercase tracking-widest px-1 flex items-center gap-1.5">
+              <Award size={16} className="text-orange-400" />
+              <span>Awards Ceremony</span>
+            </h4>
+            <div className="grid grid-cols-1 gap-2">
+              {awards.map((award) => (
+                <div 
+                  key={award.badgeId}
+                  className="p-3.5 rounded-2xl bg-zinc-900/90 border border-zinc-800 flex items-center justify-between"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">{award.emoji}</span>
+                    <div>
+                      <h5 className="text-xs font-heading font-black text-white">{award.title}</h5>
+                      <p className="text-[11px] text-zinc-400">{award.description}</p>
+                    </div>
+                  </div>
+                  <span className="text-xs font-heading font-black text-orange-400 bg-orange-950/60 border border-orange-800/60 px-2.5 py-1 rounded-xl">
+                    {award.recipientDisplayName}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Share Highlights Button */}
+        <div className="w-full pt-1">
+          <Button
+            variant="secondary"
+            size="md"
+            className="w-full border-orange-500/50 text-orange-300 hover:bg-orange-500/10"
+            onClick={handleShareGame}
+          >
+            {copiedShare ? (
+              <><Check size={16} className="mr-2 text-emerald-400" /> Highlights Copied!</>
+            ) : (
+              <><Share2 size={16} className="mr-2" /> Share Game Highlights Recap</>
+            )}
+          </Button>
+        </div>
+
         {/* Other Players */}
         {restPlayers.length > 0 && (
-          <div className="w-full space-y-2 pt-4">
+          <div className="w-full space-y-2 pt-2">
             <h4 className="text-xs font-heading font-extrabold text-zinc-500 uppercase tracking-widest px-1">Other Standings</h4>
             {restPlayers.map(p => (
-              <Card key={p.participantId} surface="level-2" className="p-3.5 flex items-center justify-between border border-zinc-800">
+              <Card key={p.participantId} surface="level-2" className="p-3 flex items-center justify-between border border-zinc-800">
                 <div className="flex items-center gap-3">
                   <span className="w-6 text-center font-mono font-bold text-xs text-zinc-500">#{p.rank}</span>
                   <span className="text-xs font-heading font-extrabold text-zinc-200">{p.displayName}</span>
@@ -135,10 +212,13 @@ export default function FinalPodiumPage() {
       </main>
 
       <BottomActionBar>
-        <Button variant="primary" size="lg" className="w-full" onClick={handleGoHome}>
+        <Button variant="primary" size="lg" className="w-full shadow-xl" onClick={handleGoHome}>
           <Home size={18} className="mr-2" /> Return to Home
         </Button>
       </BottomActionBar>
+
+      {/* Floating Emoji Reactions Bar */}
+      <LiveReactionBar />
     </div>
   );
 }

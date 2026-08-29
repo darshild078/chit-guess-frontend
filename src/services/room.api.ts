@@ -1,13 +1,21 @@
 import { api } from './api';
 import { RoomCreatedResponse, RoomJoinedResponse } from '../types/api.types';
 import { RoomView } from '../types/room.types';
-import { ActivityItem, PlayerActivityItem } from '../types/participant.types';
+import { PlayerActivityItem } from '../types/participant.types';
 import { useAuthStore } from '../stores/auth.store';
 
 const getRoomId = () => useAuthStore.getState().roomId;
 
 export const roomApi = {
-  create: (data: { hostDisplayName: string; title?: string; maxPlayers: number; totalRounds?: number }) => 
+  create: (data: {
+    hostDisplayName: string;
+    title?: string;
+    maxPlayers: number;
+    totalRounds?: number;
+    gameMode?: string;
+    promptCategory?: string;
+    customPrompt?: string;
+  }) => 
     api.post('/rooms', data) as Promise<RoomCreatedResponse>,
     
   join: (data: { roomCode: string; displayName: string }) => 
@@ -34,25 +42,20 @@ export const roomApi = {
     const roomId = getRoomId();
     return api.post(`/rooms/${roomId}/next-round`);
   },
-    
+
   openSubmissions: () => {
     const roomId = getRoomId();
-    return api.post(`/rooms/${roomId}/submissions/open`);
-  },
-    
-  closeSubmissions: () => {
-    const roomId = getRoomId();
-    return api.post(`/rooms/${roomId}/submissions/close`);
+    return api.post(`/rooms/${roomId}/rounds`);
   },
 
-  shuffleAliases: () => {
+  closeSubmissions: () => {
     const roomId = getRoomId();
-    return api.post(`/rooms/${roomId}/aliases/shuffle`);
+    return api.post(`/rooms/${roomId}/round/guesses`);
   },
-    
+
   startReveal: () => {
     const roomId = getRoomId();
-    return api.post(`/rooms/${roomId}/reveal`);
+    return api.get(`/rooms/${roomId}/round/results`);
   },
 
   leaveRoom: () => {
@@ -75,7 +78,13 @@ export const roomApi = {
     return api.post(`/rooms/${roomId}/lock`, { locked });
   },
 
-  updateSettings: (data: { totalRounds?: number; maxPlayers?: number }) => {
+  updateSettings: (data: {
+    totalRounds?: number;
+    maxPlayers?: number;
+    gameMode?: string;
+    promptCategory?: string;
+    customPrompt?: string;
+  }) => {
     const roomId = getRoomId();
     return api.patch(`/rooms/${roomId}/settings`, data);
   },

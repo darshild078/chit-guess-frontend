@@ -14,10 +14,12 @@ export interface ServerToClientEvents {
   'player:removed': (data: { participantId: string }) => void;
   'room:ended': (data: { roomId: string }) => void;
   'room:round-started': (data: { roomId: string; roundNumber: number }) => void;
+  'reaction:received': (data: { emoji: string; senderId?: string }) => void;
 }
 
 export interface ClientToServerEvents {
   'submission:submit': (data: { body: string }) => void;
   'submission:edit': (data: { body: string }) => void;
   'submission:delete': () => void;
+  'reaction:send': (data: { emoji: string }) => void;
 }

@@ -1,10 +1,16 @@
 import { api } from './api';
-import { MySubmission, SubmissionStatus } from '../types/submission.types';
+import { MySubmission, RoundPromptInfo } from '../types/submission.types';
 import { useAuthStore } from '../stores/auth.store';
 
 const getRoomId = () => useAuthStore.getState().roomId;
 
 export const submissionApi = {
+  getPrompt: () => {
+    const roomId = getRoomId();
+    if (!roomId) return Promise.resolve(null);
+    return api.get(`/rooms/${roomId}/submission/prompt`) as Promise<RoundPromptInfo>;
+  },
+
   getMine: () => {
     const roomId = getRoomId();
     if (!roomId) return Promise.resolve(null);

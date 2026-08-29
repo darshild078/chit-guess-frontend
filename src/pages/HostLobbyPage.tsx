@@ -1,11 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Settings } from 'lucide-react';
+import { Settings, Coffee, Eye, Flame } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { MobileHeader } from '../components/layout/MobileHeader';
 import { RoomCodeCard } from '../components/game/RoomCodeCard';
 import { HostControlPanel } from '../components/game/HostControlPanel';
 import { ParticipantStatusCard } from '../components/game/ParticipantStatusCard';
+import { LiveReactionBar } from '../components/game/LiveReactionBar';
 import { useRoomView, useActivity } from '../hooks/useRoom';
 import { roomApi } from '../services/room.api';
 import { LoadingState } from '../components/feedback/LoadingState';
@@ -36,8 +37,13 @@ export default function HostLobbyPage() {
     }
   };
 
+  const modeName = 
+    hostRoom.gameMode === 'chameleon' ? 'The Chameleon 🦎' :
+    hostRoom.gameMode === 'roasts' ? 'Friend Roasts 🎯' :
+    'Secret Confessions ☕';
+
   return (
-    <div className="flex flex-col min-h-full clay-surface-0">
+    <div className="flex flex-col min-h-full clay-surface-0 relative pb-28">
       <MobileHeader 
         title={hostRoom.title || "ChitGuess"} 
         rightAction={
@@ -47,7 +53,20 @@ export default function HostLobbyPage() {
         }
       />
 
-      <main className="flex-1 p-4 sm:p-6 pb-28 overflow-y-auto custom-scrollbar flex flex-col gap-6">
+      <main className="flex-1 p-4 sm:p-6 overflow-y-auto custom-scrollbar flex flex-col gap-5 max-w-lg mx-auto w-full">
+        {/* Game Mode Badge */}
+        <div className="clay-surface-inset rounded-2xl p-3 border border-zinc-800 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            {hostRoom.gameMode === 'chameleon' && <Eye size={18} className="text-emerald-400" />}
+            {hostRoom.gameMode === 'roasts' && <Flame size={18} className="text-purple-400" />}
+            {(!hostRoom.gameMode || hostRoom.gameMode === 'confessions') && <Coffee size={18} className="text-orange-400" />}
+            <span className="text-xs font-heading font-black text-white">{modeName}</span>
+          </div>
+          <span className="text-xs font-mono font-bold text-orange-400 bg-orange-950/60 border border-orange-800/60 px-2.5 py-0.5 rounded-lg">
+            {hostRoom.totalRounds || 3} Rounds
+          </span>
+        </div>
+
         <RoomCodeCard code={hostRoom.roomCode} />
 
         <div className="flex flex-col gap-3">
@@ -56,7 +75,7 @@ export default function HostLobbyPage() {
             <span className="font-mono">{hostRoom.playerCount}/{hostRoom.maxPlayers}</span>
           </h3>
           
-          <div className="grid gap-2.5">
+          <div className="grid gap-2">
             {players.length === 0 ? (
               <div className="text-center py-8 text-zinc-400 font-heading font-bold text-sm clay-surface-inset rounded-2xl border border-zinc-800">
                 Waiting for players to join...
@@ -68,6 +87,7 @@ export default function HostLobbyPage() {
                   displayName={p.displayName}
                   hasSubmitted={p.hasSubmitted}
                   connected={p.connected}
+                  isCurrentPlayer={p.isCurrentPlayer}
                 />
               ))
             )}
@@ -89,9 +109,9 @@ export default function HostLobbyPage() {
           onEndRoom={() => {}}
         />
       </BottomActionBar>
+
+      {/* Floating Emoji Reactions Bar */}
+      <LiveReactionBar />
     </div>
   );
 }
-
-
-

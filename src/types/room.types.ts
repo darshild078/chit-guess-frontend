@@ -1,6 +1,7 @@
 export type RoomStatus = 'lobby' | 'waiting' | 'submissions_open' | 'submissions_closed' | 'guessing' | 'revealed' | 'completed' | 'ended';
 export type RoundStatus = 'waiting' | 'submissions_open' | 'submissions_closed' | 'guessing' | 'revealed' | 'completed';
 export type ParticipantRole = 'owner' | 'player';
+export type GameMode = 'confessions' | 'chameleon' | 'roasts';
 
 export interface HostRoomView {
   roomId: string;
@@ -9,6 +10,9 @@ export interface HostRoomView {
   status: RoomStatus;
   currentRoundNumber: number;
   totalRounds: number;
+  gameMode: GameMode;
+  promptCategory: string;
+  customPrompt?: string | null;
   playerCount: number;
   maxPlayers: number;
   locked: boolean;
@@ -23,6 +27,9 @@ export interface PlayerRoomView {
   status: RoomStatus;
   currentRoundNumber: number;
   totalRounds: number;
+  gameMode: GameMode;
+  promptCategory: string;
+  customPrompt?: string | null;
   playerCount: number;
   maxPlayers: number;
   locked: boolean;

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { LogOut } from 'lucide-react';
+import { LogOut, Coffee, Eye, Flame } from 'lucide-react';
 import { MobileHeader } from '../components/layout/MobileHeader';
 import { RoomCodeCard } from '../components/game/RoomCodeCard';
 import { ParticipantStatusCard } from '../components/game/ParticipantStatusCard';
 import { LeaveRoomModal } from '../components/game/LeaveRoomModal';
+import { LiveReactionBar } from '../components/game/LiveReactionBar';
 import { useRoomView, useActivity } from '../hooks/useRoom';
 import { LoadingState } from '../components/feedback/LoadingState';
 import { ErrorState } from '../components/feedback/ErrorState';
@@ -31,8 +32,13 @@ export default function PlayerLobbyPage() {
     clearSession();
   };
 
+  const modeName = 
+    playerRoom.gameMode === 'chameleon' ? 'The Chameleon 🦎' :
+    playerRoom.gameMode === 'roasts' ? 'Friend Roasts 🎯' :
+    'Secret Confessions ☕';
+
   return (
-    <div className="flex flex-col min-h-full clay-surface-0">
+    <div className="flex flex-col min-h-full clay-surface-0 relative pb-28">
       <MobileHeader 
         title={playerRoom.title || "ChitGuess"} 
         rightAction={
@@ -42,9 +48,18 @@ export default function PlayerLobbyPage() {
         }
       />
 
-      <main className="flex-1 p-4 sm:p-6 pb-28 overflow-y-auto custom-scrollbar flex flex-col gap-6">
-        <div className="text-center mb-1">
-          <p className="text-xs font-heading font-bold text-zinc-400">Host: <span className="text-white font-extrabold">{playerRoom.hostDisplayName}</span></p>
+      <main className="flex-1 p-4 sm:p-6 overflow-y-auto custom-scrollbar flex flex-col gap-5 max-w-lg mx-auto w-full">
+        {/* Game Mode Badge */}
+        <div className="clay-surface-inset rounded-2xl p-3 border border-zinc-800 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            {playerRoom.gameMode === 'chameleon' && <Eye size={18} className="text-emerald-400" />}
+            {playerRoom.gameMode === 'roasts' && <Flame size={18} className="text-purple-400" />}
+            {(!playerRoom.gameMode || playerRoom.gameMode === 'confessions') && <Coffee size={18} className="text-orange-400" />}
+            <span className="text-xs font-heading font-black text-white">{modeName}</span>
+          </div>
+          <span className="text-xs font-mono font-bold text-orange-400 bg-orange-950/60 border border-orange-800/60 px-2.5 py-0.5 rounded-lg">
+            {playerRoom.totalRounds || 3} Rounds
+          </span>
         </div>
 
         <RoomCodeCard code={playerRoom.roomCode} />
@@ -55,7 +70,7 @@ export default function PlayerLobbyPage() {
             <span className="font-mono">{playerRoom.playerCount}/{playerRoom.maxPlayers}</span>
           </h3>
           
-          <div className="grid gap-2.5">
+          <div className="grid gap-2">
             {players.map(p => (
               <ParticipantStatusCard 
                 key={p.displayName}
@@ -71,15 +86,15 @@ export default function PlayerLobbyPage() {
 
       <BottomActionBar>
         <div className="flex items-center justify-center gap-3 py-1">
-          <Spinner className="w-5 h-5 text-red-500" />
+          <Spinner className="w-5 h-5 text-orange-500" />
           <p className="text-xs font-heading font-extrabold text-zinc-300 tracking-wide">Waiting for host to start...</p>
         </div>
       </BottomActionBar>
 
       <LeaveRoomModal isOpen={showLeave} onClose={() => setShowLeave(false)} onConfirm={handleLeave} />
+
+      {/* Floating Emoji Reactions Bar */}
+      <LiveReactionBar />
     </div>
   );
 }
-
-
-
